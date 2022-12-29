@@ -1,30 +1,28 @@
-import javax.swing.*;
+
+import org.opencv.core.Core;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Rect rect = new Rect(2, 2, new Point(1, 1));
-        Circle circle = new Circle(3, new Point(2, 2));
-        Triangle triangle = new Triangle(new Point(1, 1), new Point(0, 0), new Point(-3, -3));
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        Scene scene = new Scene();
+        Rect rect = new Rect(200, 100, new MyPoint(50, 50));
+        Circle circle = new Circle(30, new MyPoint(50, 50));
+        circle.translate(new MyPoint(100, 100));
+        Segment segment = new Segment(30, new MyPoint(20, 40), new MyPoint(40, 70));
+        //segment.translate(new MyPoint(10, 50));
+        Triangle triangle = new Triangle(new MyPoint(50,50), new MyPoint(100,100), new MyPoint(150,50));
+//        scene.addItem(rect);
+//        scene.addItem(circle);
+//        scene.addItem(segment);
+        scene.addItem(triangle);
+        scene.draw();
 
         List<Item> children = new ArrayList<>();
         children.add(rect);
-        children.add(circle);
-        children.add(triangle);
-        ComplexItem complexItem = new ComplexItem(children);
 
-        JFrame frame = new JFrame("Swing");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Scene scene = new Scene(List.of(rect));
-        RectanglePanel panel = new RectanglePanel();
-
-        scene.getItemList().forEach(item -> {
-            frame.getContentPane().add(item);
-        });
-
-        frame.setVisible(true);
     }
 }

@@ -1,15 +1,17 @@
-import javax.swing.*;
-import java.awt.*;
+import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
+
 import java.util.List;
 
-public abstract class Item extends JPanel {
-    Point position;
-    ComplexItem children;
-    Scene scene;
+public abstract class Item {
+    MyPoint position;
+//    ComplexItem children;
+    Scene scene = new Scene();
 
-    abstract Point getPosition();
 
-    abstract void translate(Point point);
-    public abstract void draw(Graphics g);
-    abstract List<Point> getBoundingBox();
+    abstract MyPoint getPosition();
+
+    abstract void translate(MyPoint myPoint);
+    public abstract void draw(Mat image, Scalar color);
+    abstract List<MyPoint> getBoundingBox();
 }

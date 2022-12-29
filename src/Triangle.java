@@ -1,14 +1,16 @@
-import java.awt.*;
+import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class Triangle extends Shape {
-    private Point p1;
-    private Point p2;
-    private Point p3;
+    private MyPoint p1;
+    private MyPoint p2;
+    private MyPoint p3;
 
 
-    public Triangle(Point p1, Point p2, Point p3) {
+    public Triangle(MyPoint p1, MyPoint p2, MyPoint p3) {
         assert !p1.equals(p2);
         assert !p2.equals(p3);
         this.p1 = p1;
@@ -16,15 +18,15 @@ public class Triangle extends Shape {
         this.p3 = p3;
     }
 
-    public Point getP1() {
+    public MyPoint getP1() {
         return p1;
     }
 
-    public Point getP2() {
+    public MyPoint getP2() {
         return p2;
     }
 
-    public Point getP3() {
+    public MyPoint getP3() {
         return p3;
     }
 
@@ -34,28 +36,32 @@ public class Triangle extends Shape {
     }
 
     @Override
-    Point getPosition() {
-        return new Point((p1.getX() + p2.getX() + p3.getX()) / 3, (p1.getY() + p2.getY() + p3.getY()) / 3);
+    MyPoint getPosition() {
+        return new MyPoint((p1.getX() + p2.getX() + p3.getX()) / 3, (p1.getY() + p2.getY() + p3.getY()) / 3);
     }
 
     @Override
-    void translate(Point point) {
-        this.p1 = new Point(point.getX() + p1.getX(), point.getY() + p1.getY());
-        this.p2 = new Point(point.getX() + p2.getX(), point.getY() + p2.getY());
-        this.p3 = new Point(point.getX() + p3.getX(), point.getY() + p3.getY());
+    void translate(MyPoint myPoint) {
+        this.p1 = new MyPoint(myPoint.getX() + p1.getX(), myPoint.getY() + p1.getY());
+        this.p2 = new MyPoint(myPoint.getX() + p2.getX(), myPoint.getY() + p2.getY());
+        this.p3 = new MyPoint(myPoint.getX() + p3.getX(), myPoint.getY() + p3.getY());
     }
 
     @Override
-    public void draw(Graphics g) {
+    public void draw(Mat image, Scalar color) {
+        Imgproc.line(image, new Point(p1.getX(), p1.getY()), new Point(p2.getX(), p2.getY()), color);
+        Imgproc.line(image, new Point(p2.getX(), p2.getY()), new Point(p3.getX(), p3.getY()), color);
+        Imgproc.line(image, new Point(p3.getX(), p3.getY()), new Point(p1.getX(), p1.getY()), color);
+
 
     }
-
     @Override
-    List<Point> getBoundingBox() {
-        Point leftBottom = p1;
-        Point rightBottom = p2;
-        Point rightTop = new Point(p2.getX(), p3.getY());
-        Point leftTop = new Point(p1.getX(), p3.getY());
+    List<MyPoint> getBoundingBox() {
+        MyPoint leftBottom = p1;
+        MyPoint rightBottom = p2;
+        MyPoint rightTop = new MyPoint(p2.getX(), p3.getY());
+        MyPoint leftTop = new MyPoint(p1.getX(), p3.getY());
         return Arrays.asList(leftBottom, rightBottom, rightTop, leftTop);
+
     }
 }

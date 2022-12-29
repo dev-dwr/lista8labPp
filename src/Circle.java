@@ -1,18 +1,19 @@
-import java.awt.*;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import java.util.Arrays;
 import java.util.List;
 
 public class Circle extends Shape {
     private int radius;
-    private Point center;
+    private MyPoint center;
 
-    public Circle(int radius) {
-        this.radius = radius;
-    }
 
-    public Circle(int radius, Point center) {
+    public Circle(int radius, MyPoint center) {
         this.radius = radius;
-        super.position = center;
+        this.center = center;
     }
 
     public int getRadius() {
@@ -26,27 +27,30 @@ public class Circle extends Shape {
     }
 
     @Override
-    Point getPosition() {
+    MyPoint getPosition() {
         return center;
     }
 
     @Override
-    void translate(Point point) {
-        this.center = new Point(point.getX() + center.getX(), point.getY() + center.getY());
+    void translate(MyPoint myPoint) {
+        this.center = new MyPoint(myPoint.getX() + center.getX(), myPoint.getY() + center.getY());
     }
 
     @Override
-    public void draw(Graphics g) {
-
+    public void draw(Mat image, Scalar color) {
+        Imgproc.circle(image, new Point(center.getX(), center.getY()), getRadius(), color);
+        List<MyPoint> boundingBox = getBoundingBox();
+        Imgproc.rectangle(image, new Point(boundingBox.get(2).getX(), boundingBox.get(2).getY()),
+                new Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()), color);
     }
 
     @Override
-    List<Point> getBoundingBox() {
-        Point position = getPosition();
-        Point rightTop = new Point(position.getX() + radius, position.getY() + radius);
-        Point rightBottom = new Point(position.getX() + radius, position.getY() - radius);
-        Point leftBottom = new Point(position.getX() - radius, position.getY() - radius);
-        Point leftTop = new Point(position.getX() - radius, position.getY() + radius);
+    List<MyPoint> getBoundingBox() {
+        MyPoint position = getPosition();
+        MyPoint rightTop = new MyPoint(position.getX() + radius, position.getY() + radius);
+        MyPoint rightBottom = new MyPoint(position.getX() + radius, position.getY() - radius);
+        MyPoint leftBottom = new MyPoint(position.getX() - radius, position.getY() - radius);
+        MyPoint leftTop = new MyPoint(position.getX() - radius, position.getY() + radius);
         return Arrays.asList(leftBottom, rightBottom, rightTop, leftTop);
     }
 }

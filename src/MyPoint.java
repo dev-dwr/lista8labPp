@@ -1,8 +1,8 @@
-public class Point {
+public class MyPoint {
     private int X;
     private int Y;
 
-    public Point(int x, int y) {
+    public MyPoint(int x, int y) {
         X = x;
         Y = y;
     }
