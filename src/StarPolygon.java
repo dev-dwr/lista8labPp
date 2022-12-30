@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Spiral extends Shape {
+public class StarPolygon extends Shape {
 
     private MyPoint center;
     private int thickness = 2;
@@ -13,7 +13,7 @@ public class Spiral extends Shape {
     private int shift = 0;
     private Point[] vertices = new Point[10];
 
-    public Spiral(MyPoint center) {
+    public StarPolygon(MyPoint center) {
         this.center = center;
     }
 
