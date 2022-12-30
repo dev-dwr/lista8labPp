@@ -1,4 +1,9 @@
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.Arrays;
@@ -53,14 +58,33 @@ public class Triangle extends Shape {
         Imgproc.line(image, new Point(p2.getX(), p2.getY()), new Point(p3.getX(), p3.getY()), color);
         Imgproc.line(image, new Point(p3.getX(), p3.getY()), new Point(p1.getX(), p1.getY()), color);
 
+        Mat triangle = new Mat(3, 1, CvType.CV_32FC2);
+        triangle.put(0, 0, new double[]{(double) p1.getX(), (double) p1.getY()});
+        triangle.put(1, 0, new double[]{(double) p2.getX(), (double) p2.getY()});
+        triangle.put(2, 0, new double[]{(double) p3.getX(), (double) p3.getY()});
+
+        Rect boundingBox = Imgproc.boundingRect(triangle);
+        int x = boundingBox.x;
+        int y = boundingBox.y;
+        int width = boundingBox.width;
+        int height = boundingBox.height;
+
+        Imgproc.rectangle(image, new Point(x, y), new Point(x + width, y + height), color, 1);
 
     }
+
     @Override
     List<MyPoint> getBoundingBox() {
         MyPoint leftBottom = p1;
         MyPoint rightBottom = p2;
         MyPoint rightTop = new MyPoint(p2.getX(), p3.getY());
         MyPoint leftTop = new MyPoint(p1.getX(), p3.getY());
+
+        Mat triangle = new Mat(3, 1, CvType.CV_32FC2);
+        triangle.put(0, 0, new int[]{p1.getX(), p1.getY()});
+        triangle.put(1, 0, new double[]{p2.getX(), p2.getX()});
+        triangle.put(2, 0, new double[]{p2.getX(), p2.getX()});
+
         return Arrays.asList(leftBottom, rightBottom, rightTop, leftTop);
 
     }

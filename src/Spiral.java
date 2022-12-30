@@ -1,66 +1,72 @@
-//import java.awt.*;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class Spiral extends Shape {
-//
-//    private Point center;
-//    private int turns;
-//
-//    public Spiral(Point center, int turns) {
-//        this.center = center;
-//        this.turns = turns;
-//    }
-//
-//    public List<Point> getPoints() {
-//        List<Point> points = new ArrayList<>();
-//        double angle = 0;
-//        double step = 0.1;
-//        double r = 0;
-//
-//        for (int i = 0; i < turns * 100; i++) {
-//            r = r + step;
-//            angle = angle + step / r;
-//
-//            int x = (int) (center.getX() + r * Math.cos(angle));
-//            int y = (int) (center.getY() + r * Math.sin(angle));
-//
-//            points.add(new Point(x, y));
-//        }
-//
-//        return points;
-//    }
-//
-//    @Override
-//    Point getPosition() {
-//        return center;
-//    }
-//
-//    @Override
-//    void translate(Point point) {
-//        center = new Point(center.getX() + point.getX(), center.getY() + point.getY());
-//    }
-//
-//    @Override
-//    void draw() {
-//
-//    }
-//
-//    @Override
-//    List<Point> getBoundingBox() {
-//        List<Point> points = getPoints();
-//
-//        int minX = Integer.MAX_VALUE;
-//        int minY = Integer.MAX_VALUE;
-//        int maxX = Integer.MIN_VALUE;
-//        int maxY = Integer.MIN_VALUE;
-//
-//        for (Point p : points) {
-//            minX = Math.min(minX, p.getX());
-//            minY = Math.min(minY, p.getY());
-//            maxX = Math.max(maxX, p.getX());
-//            maxY = Math.max(maxY, p.getY());
-//        }
-//        return new Rect(maxX - minX, maxY - minY, new Point(minX, minY)).getBoundingBox();
-//    }
-//}
+import org.opencv.core.*;
+import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Spiral extends Shape {
+
+    private MyPoint center;
+    private int thickness = 2;
+    private int lineType = Imgproc.LINE_8;
+    private int shift = 0;
+    private Point[] vertices = new Point[10];
+
+    public Spiral(MyPoint center) {
+        this.center = center;
+    }
+
+
+    @Override
+    MyPoint getPosition() {
+        return center;
+    }
+
+    @Override
+    void translate(MyPoint point) {
+        center = new MyPoint(center.getX() + point.getX(), center.getY() + point.getY());
+    }
+
+    @Override
+    public void draw(Mat image, Scalar color) {
+        Point center = new Point(this.center.getX(), this.center.getY());
+        int radius = 200;
+        //vertices of the star polygon
+        for (int i = 0; i < 10; i++) {
+            double angle = Math.toRadians(36 * i);
+            double x = center.x + radius * Math.cos(angle);
+            double y = center.y + radius * Math.sin(angle);
+            vertices[i] = new Point(x, y);
+        }
+
+        // draw
+        for (int i = 0; i < 5; i++) {
+            Imgproc.line(image, vertices[i], vertices[(i + 5) % 10], color, thickness, lineType, shift);
+        }
+
+        MatOfPoint2f polygon = new MatOfPoint2f(vertices);
+        RotatedRect box = Imgproc.minAreaRect(polygon);
+        Point[] boxVertices = new Point[4];
+        box.points(boxVertices);
+
+        //boduing box draw
+        Imgproc.line(image, boxVertices[0], boxVertices[1], color, thickness, lineType, shift);
+        Imgproc.line(image, boxVertices[1], boxVertices[2], color, thickness, lineType, shift);
+        Imgproc.line(image, boxVertices[2], boxVertices[3], color, thickness, lineType, shift);
+        Imgproc.line(image, boxVertices[3], boxVertices[0], color, thickness, lineType, shift);
+    }
+
+    @Override
+    List<MyPoint> getBoundingBox() {
+        MatOfPoint2f polygon = new MatOfPoint2f(vertices);
+        RotatedRect box = Imgproc.minAreaRect(polygon);
+        Point[] boxVertices = new Point[4];
+        box.points(boxVertices);
+        List<MyPoint> result = new ArrayList<>();
+        for(Point p : boxVertices){
+            result.add(new MyPoint((int)p.x, (int)p.y));
+        }
+        return result;
+    }
+}

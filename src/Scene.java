@@ -12,9 +12,11 @@ public class Scene {
     private java.util.List<Item> itemList = new LinkedList<>();
     private Mat image;
     private Scalar color;
+    public static final int ROWS = 600;
+    public static final int COLS = 800;
 
     public Scene() {
-        this.image = new Mat(400, 400, CvType.CV_8UC3, new Scalar(255, 255, 255));
+        this.image = new Mat(ROWS, COLS, CvType.CV_8UC3, new Scalar(255, 255, 255));
         this.color = new Scalar(0, 0, 255);
     }
 
