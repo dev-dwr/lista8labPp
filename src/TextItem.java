@@ -29,13 +29,16 @@ public class TextItem extends Item {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
+    public void draw(Mat image, Scalar color,boolean box) {
         List<MyPoint> points = getBoundingBox();
         MyPoint topLeft = points.get(1);
         MyPoint bottomRight = points.get(0);
         Imgproc.putText(image, text, org, fontFace, fontScale, color, thickness);
-        Imgproc.rectangle(image, new Point(topLeft.getX(), topLeft.getY()),
-                new Point(bottomRight.getX(), bottomRight.getY()), color);
+        if(box){
+            Imgproc.rectangle(image, new Point(topLeft.getX(), topLeft.getY()),
+                    new Point(bottomRight.getX(), bottomRight.getY()), color);
+        }
+
     }
 
     @Override

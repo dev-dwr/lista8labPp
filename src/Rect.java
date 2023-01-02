@@ -10,11 +10,17 @@ public class Rect extends Shape {
     private int height;
     private MyPoint center;
 
+    private int thickness = 2;
 
     public Rect(int width, int height, MyPoint center) {
         this.width = width;
         this.height = height;
         this.center = center;
+        super.isFilled = thickness == -1 ? true : false;
+    }
+
+    public void setThickness(int thickness) {
+        this.thickness = thickness;
     }
 
     public int getWidth() {
@@ -41,9 +47,9 @@ public class Rect extends Shape {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
+    public void draw(Mat image, Scalar color, boolean box) {
         org.opencv.core.Rect rect = new org.opencv.core.Rect(center.getX(), center.getY(), width, height);
-        Imgproc.rectangle(image, rect, color);
+        Imgproc.rectangle(image, rect, color, thickness);
     }
 
     @Override

@@ -9,11 +9,20 @@ import java.util.List;
 public class Circle extends Shape {
     private int radius;
     private MyPoint center;
-
-
+    private boolean activeBoudingBox;
+    private int thickness = 2;
     public Circle(int radius, MyPoint center) {
         this.radius = radius;
         this.center = center;
+        super.isFilled = thickness == -1 ? true : false;
+    }
+
+    public boolean isActiveBoudingBox() {
+        return activeBoudingBox;
+    }
+
+    public void setActiveBoudingBox(boolean activeBoudingBox) {
+        this.activeBoudingBox = activeBoudingBox;
     }
 
     public int getRadius() {
@@ -23,7 +32,7 @@ public class Circle extends Shape {
 
     @Override
     boolean getFilled() {
-        return false;
+        return isFilled;
     }
 
     @Override
@@ -37,11 +46,13 @@ public class Circle extends Shape {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
-        Imgproc.circle(image, new Point(center.getX(), center.getY()), getRadius(), color);
-        List<MyPoint> boundingBox = getBoundingBox();
-        Imgproc.rectangle(image, new Point(boundingBox.get(2).getX(), boundingBox.get(2).getY()),
-                new Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()), color);
+    public void draw(Mat image, Scalar color, boolean box) {
+        Imgproc.circle(image, new Point(center.getX(), center.getY()), getRadius(), color, thickness);
+        if (box) {
+            List<MyPoint> boundingBox = getBoundingBox();
+            Imgproc.rectangle(image, new Point(boundingBox.get(2).getX(), boundingBox.get(2).getY()),
+                    new Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()), color);
+        }
     }
 
     @Override

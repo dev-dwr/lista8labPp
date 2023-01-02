@@ -1,8 +1,9 @@
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ComplexItem extends Item {
     private List<Item> children;
@@ -17,15 +18,7 @@ public class ComplexItem extends Item {
 
     @Override
     MyPoint getPosition() {
-        List<Item> items = getChildren();
-        int widthSum = 0;
-        int heightSum = 0;
-
-        for (Item item : items) {
-            widthSum += item.getPosition().getX();
-            heightSum += item.getPosition().getY();
-        }
-        return new MyPoint(widthSum / items.size(), heightSum / items.size());
+        return null;
     }
 
     @Override
@@ -37,42 +30,35 @@ public class ComplexItem extends Item {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
-        children.forEach(el -> el.draw(image, color));
+    public void draw(Mat image, Scalar color, boolean box) {
+        children.forEach(el -> el.draw(image, color, false));
+        getBoundingBox();
+        if(true){
+            List<MyPoint> boundingBox = getBoundingBox();
+            Imgproc.rectangle(image, new org.opencv.core.Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()),
+                    new org.opencv.core.Point(boundingBox.get(1).getX(), boundingBox.get(1).getY()), color);
+        }
     }
 
     @Override
     List<MyPoint> getBoundingBox() {
-        List<Item> items = getChildren();
-        int sumRightTopX = 0;
-        int sumRightBottomX = 0;
-        int sumLeftBottomX = 0;
-        int sumLeftTopX = 0;
+        //bottom-right
+        int rightX = Integer.MIN_VALUE;
+        int yRight = Integer.MAX_VALUE;
+        //top-left
+        int topX = Integer.MAX_VALUE;
+        int topY = Integer.MIN_VALUE;
 
-        int sumRightTopY = 0;
-        int sumRightBottomY = 0;
-        int sumLeftBottomY = 0;
-        int sumLeftTopY = 0;
+        for(Item i : children){
+            List<MyPoint> boundingBox = i.getBoundingBox();
+            for(MyPoint p : boundingBox){
+                rightX = Math.max(rightX, p.getX());
+                yRight = Math.min(yRight, p.getY());
 
-
-        for (Item item : items) {
-            sumLeftBottomX = item.getBoundingBox().get(0).getX() + sumLeftBottomX;
-            sumRightBottomX = item.getBoundingBox().get(1).getX() + sumRightBottomX;
-            sumRightTopX = item.getBoundingBox().get(2).getX() + sumRightTopX;
-            sumLeftTopX = item.getBoundingBox().get(3).getX() + sumLeftTopX;
-
-            sumLeftBottomY = item.getBoundingBox().get(0).getX() + sumLeftBottomY;
-            sumRightBottomY = item.getBoundingBox().get(1).getX() + sumRightBottomY;
-            sumRightTopY = item.getBoundingBox().get(2).getX() + sumRightTopY;
-            sumLeftTopY = item.getBoundingBox().get(3).getX() + sumLeftTopY;
+                topX =  Math.min(topX, p.getX());
+                topY =  Math.max(topY, p.getY());
+            }
         }
-        int size = items.size();
-
-        MyPoint rightTop = new MyPoint(sumRightTopX / size, sumRightTopY / size);
-        MyPoint rightBottom = new MyPoint(sumRightBottomX / size, sumRightBottomY / size);
-        MyPoint leftBottom = new MyPoint(sumLeftBottomX / size, sumLeftBottomY / size);
-        MyPoint leftTop = new MyPoint(sumLeftTopX / size, sumLeftTopY / size);
-
-        return Arrays.asList(leftBottom, rightBottom, rightTop, leftTop);
+        return Arrays.asList(new MyPoint(rightX, yRight), new MyPoint(topX, topY));
     }
 }

@@ -41,11 +41,13 @@ public class Segment extends Primitive {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
+    public void draw(Mat image, Scalar color, boolean box) {
         Imgproc.line(image, new Point(start.getX(), start.getY()), new Point(end.getX(), end.getY()), color);
-        List<MyPoint> boundingBox = getBoundingBox();
-        Imgproc.rectangle(image, new org.opencv.core.Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()),
-                new org.opencv.core.Point(boundingBox.get(2).getX(), boundingBox.get(2).getY()), color);
+        if (box) {
+            List<MyPoint> boundingBox = getBoundingBox();
+            Imgproc.rectangle(image, new org.opencv.core.Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()),
+                    new org.opencv.core.Point(boundingBox.get(2).getX(), boundingBox.get(2).getY()), color);
+        }
     }
 
     @Override

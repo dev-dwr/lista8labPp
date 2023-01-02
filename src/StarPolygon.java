@@ -29,7 +29,7 @@ public class StarPolygon extends Shape {
     }
 
     @Override
-    public void draw(Mat image, Scalar color) {
+    public void draw(Mat image, Scalar color, boolean boxImg) {
         Point center = new Point(this.center.getX(), this.center.getY());
         int radius = 200;
         //vertices of the star polygon
@@ -51,10 +51,13 @@ public class StarPolygon extends Shape {
         box.points(boxVertices);
 
         //boduing box draw
-        Imgproc.line(image, boxVertices[0], boxVertices[1], color, thickness, lineType, shift);
-        Imgproc.line(image, boxVertices[1], boxVertices[2], color, thickness, lineType, shift);
-        Imgproc.line(image, boxVertices[2], boxVertices[3], color, thickness, lineType, shift);
-        Imgproc.line(image, boxVertices[3], boxVertices[0], color, thickness, lineType, shift);
+        if(boxImg){
+            Imgproc.line(image, boxVertices[0], boxVertices[1], color, thickness, lineType, shift);
+            Imgproc.line(image, boxVertices[1], boxVertices[2], color, thickness, lineType, shift);
+            Imgproc.line(image, boxVertices[2], boxVertices[3], color, thickness, lineType, shift);
+            Imgproc.line(image, boxVertices[3], boxVertices[0], color, thickness, lineType, shift);
+        }
+
     }
 
     @Override

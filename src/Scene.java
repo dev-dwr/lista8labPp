@@ -22,7 +22,7 @@ public class Scene {
 
     public void draw() {
         List<Item> items = getItemList();
-        items.forEach(item -> item.draw(image, color));
+        items.forEach(item -> item.draw(image, color, true));
         HighGui.imshow("Image", image);
         HighGui.waitKey();
     }

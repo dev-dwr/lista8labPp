@@ -12,6 +12,6 @@ public abstract class Item {
     abstract MyPoint getPosition();
 
     abstract void translate(MyPoint myPoint);
-    public abstract void draw(Mat image, Scalar color);
+    public abstract void draw(Mat image, Scalar color, boolean box);
     abstract List<MyPoint> getBoundingBox();
 }
