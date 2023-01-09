@@ -31,7 +31,7 @@ public class StarPolygon extends Shape {
     @Override
     public void draw(Mat image, Scalar color, boolean boxImg) {
         Point center = new Point(this.center.getX(), this.center.getY());
-        int radius = 200;
+        int radius = 100;
         //vertices of the star polygon
         for (int i = 0; i < 10; i++) {
             double angle = Math.toRadians(36 * i);
@@ -41,7 +41,7 @@ public class StarPolygon extends Shape {
         }
 
         // draw
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             Imgproc.line(image, vertices[i], vertices[(i + 5) % 10], color, thickness, lineType, shift);
         }
 
