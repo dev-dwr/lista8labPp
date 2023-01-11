@@ -32,8 +32,7 @@ public class ComplexItem extends Item {
     @Override
     public void draw(Mat image, Scalar color, boolean box) {
         children.forEach(el -> el.draw(image, color, false));
-        getBoundingBox();
-        if(true){
+        if(box){
             List<MyPoint> boundingBox = getBoundingBox();
             Imgproc.rectangle(image, new org.opencv.core.Point(boundingBox.get(0).getX(), boundingBox.get(0).getY()),
                     new org.opencv.core.Point(boundingBox.get(1).getX(), boundingBox.get(1).getY()), color);

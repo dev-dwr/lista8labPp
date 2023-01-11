@@ -10,13 +10,14 @@ public class Rect extends Shape {
     private int height;
     private MyPoint center;
 
+
     private int thickness = 2;
 
     public Rect(int width, int height, MyPoint center) {
         this.width = width;
         this.height = height;
         this.center = center;
-        super.isFilled = thickness == -1 ? true : false;
+        super.isFilled = thickness == -1;
     }
 
     public void setThickness(int thickness) {

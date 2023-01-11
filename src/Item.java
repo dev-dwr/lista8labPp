@@ -3,10 +3,10 @@ import org.opencv.core.Scalar;
 
 import java.util.List;
 
-public abstract class Item {
+public abstract class Item{
     MyPoint position;
-//    ComplexItem children;
-    Scene scene = new Scene();
+    ComplexItem children;
+    Scene scene;
 
 
     abstract MyPoint getPosition();

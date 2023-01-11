@@ -5,12 +5,19 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
-public class Triangle extends Shape {
-    private MyPoint p1;
-    private MyPoint p2;
-    private MyPoint p3;
+public class Triangle extends Shape implements Singleton {
+    private static Item INSTANCE = null;
+    private static boolean instanceExists = false;
+    private static MyPoint p1;
+    private static MyPoint p2;
+    private static MyPoint p3;
     private int thickness = -1;
 
+    Triangle() {
+//        p1 = new MyPoint(50, 50);
+//        p2 = new MyPoint(100, 100);
+//        p3 = new MyPoint(150, 50);
+    }
 
     public Triangle(MyPoint p1, MyPoint p2, MyPoint p3) {
         assert !p1.equals(p2);
@@ -18,24 +25,21 @@ public class Triangle extends Shape {
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
-        super.isFilled = thickness == -1 ? true : false;
+        super.isFilled = thickness == -1;
     }
 
-    public void setThickness(int thickness) {
-        this.thickness = thickness;
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+    //przekazanie podczas parametr do metoedy
+    public static Item init(MyPoint p1, MyPoint p2, MyPoint p3) {
+        INSTANCE = new Triangle(p1,p2,p3);
+        return INSTANCE;
     }
 
-    public MyPoint getP1() {
-        return p1;
-    }
-
-    public MyPoint getP2() {
-        return p2;
-    }
-
-    public MyPoint getP3() {
-        return p3;
-    }
 
     @Override
     boolean getFilled() {
@@ -56,11 +60,11 @@ public class Triangle extends Shape {
 
     @Override
     public void draw(Mat image, Scalar color, boolean box) {
-        if(thickness == -1){
+        if (thickness == -1) {
             Imgproc.fillConvexPoly(image,
                     new MatOfPoint(new Point(p1.getX(), p1.getY()),
-                            new Point(p2.getX(),p2.getY()), new Point(p3.getX(),p3.getY())), color);
-        }else {
+                            new Point(p2.getX(), p2.getY()), new Point(p3.getX(), p3.getY())), color);
+        } else {
             Imgproc.line(image, new Point(p1.getX(), p1.getY()), new Point(p2.getX(), p2.getY()), color, thickness);
             Imgproc.line(image, new Point(p2.getX(), p2.getY()), new Point(p3.getX(), p3.getY()), color, thickness);
             Imgproc.line(image, new Point(p3.getX(), p3.getY()), new Point(p1.getX(), p1.getY()), color, thickness);
@@ -82,6 +86,7 @@ public class Triangle extends Shape {
 
         }
     }
+
 
     @Override
     List<MyPoint> getBoundingBox() {
