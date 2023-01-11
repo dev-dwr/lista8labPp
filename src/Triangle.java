@@ -11,7 +11,7 @@ public class Triangle extends Shape implements Singleton {
     private static MyPoint p1;
     private static MyPoint p2;
     private static MyPoint p3;
-    private int thickness = -1;
+    private int thickness = 1;
 
     Triangle() {
 //        p1 = new MyPoint(50, 50);

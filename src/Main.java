@@ -9,16 +9,22 @@ public class Main {
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Scene scene = new Scene();
+        Rect rect = new Rect(100, 100, new MyPoint(100, 50));
+        Circle circle = new Circle(30, new MyPoint(50, 50));
         Triangle.init(new MyPoint(50, 50), new MyPoint(100, 100), new MyPoint(150, 50));
         Triangle.init(new MyPoint(150, 50), new MyPoint(10, 10), new MyPoint(15, 50));
         Item triangle = Triangle.getInstance();
         Item triangle2 = Triangle.getInstance();
         scene.addItem(triangle);
-        scene.addItem(triangle2);
-        scene.draw();
+//        scene.addItem(triangle2);
+        scene.addItem(rect);
+        scene.addItem(circle);
+//        scene.draw(true);
+
+        SceneDecorator sceneDecorator = new SceneDecorator(scene, scene);
+        sceneDecorator.draw(false);
     }
 }
-
 
 
 //    Scene scene = new Scene();

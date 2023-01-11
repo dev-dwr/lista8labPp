@@ -8,7 +8,7 @@ import java.util.List;
 
 
 
-public class Scene {
+public class Scene implements SceneInterface{
     private java.util.List<Item> itemList = new LinkedList<>();
     private Mat image;
     private Scalar color;
@@ -20,9 +20,17 @@ public class Scene {
         this.color = new Scalar(0, 0, 255);
     }
 
-    public void draw() {
+    public Mat getImage() {
+        return image;
+    }
+
+    public Scalar getColor() {
+        return color;
+    }
+
+    public void draw(boolean enableBox) {
         List<Item> items = getItemList();
-        items.forEach(item -> item.draw(image, color, true));
+        items.forEach(item -> item.draw(image, color, enableBox));
         HighGui.imshow("Image", image);
         HighGui.waitKey();
     }
