@@ -5,11 +5,25 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.*;
 
-public class ComplexItem extends Item {
+public class ComplexItem extends Item implements Singleton{
+    private static Item INSTANCE = null;
+
     private List<Item> children;
 
     public ComplexItem(List<Item> children) {
         this.children = children;
+    }
+
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(List<Item> children) {
+        INSTANCE = new ComplexItem(children);
+        return INSTANCE;
     }
 
     public List<Item> getChildren() {

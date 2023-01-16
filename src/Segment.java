@@ -6,7 +6,8 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
-public class Segment extends Primitive {
+public class Segment extends Primitive implements Singleton {
+    private static Item INSTANCE = null;
     private int length;
     private MyPoint start;
     private MyPoint end;
@@ -15,6 +16,18 @@ public class Segment extends Primitive {
         this.length = length;
         this.start = start;
         this.end = end;
+    }
+
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(int length, MyPoint start, MyPoint end) {
+        INSTANCE = new Segment(length, start, end);
+        return INSTANCE;
     }
 
     public int getLength() {

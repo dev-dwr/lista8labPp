@@ -5,10 +5,11 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
-public class Rect extends Shape {
+public class Rect extends Shape implements Singleton{
     private int width;
     private int height;
     private MyPoint center;
+    private static Item INSTANCE = null;
 
 
     private int thickness = 2;
@@ -18,6 +19,18 @@ public class Rect extends Shape {
         this.height = height;
         this.center = center;
         super.isFilled = thickness == -1;
+    }
+
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(int width, int height, MyPoint center) {
+        INSTANCE = new Rect(width,height,center);
+        return INSTANCE;
     }
 
     public void setThickness(int thickness) {

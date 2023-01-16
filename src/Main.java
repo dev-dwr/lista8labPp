@@ -1,25 +1,58 @@
 import org.opencv.core.Core;
-import org.opencv.core.Point;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Main {
     //TODO: Invalid ComplexItem
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         Scene scene = new Scene();
-        Rect rect = new Rect(100, 100, new MyPoint(100, 50));
-        Circle circle = new Circle(30, new MyPoint(50, 50));
+
+        List<Item> children = new ArrayList<>();
+        Circle head = new Circle(50, new MyPoint(300, 100));
+        Circle middle = new Circle(100, new MyPoint(300, 250));
+        Circle bottom = new Circle(150, new MyPoint(300, 500));
+        TextItem text2 = new TextItem("elo", new MyPoint(10, 550));
+        children.add(head);
+        children.add(middle);
+        children.add(bottom);
+        children.add(text2);
+
+        ComplexItem.init(children);
+        Item complex = ComplexItem.getInstance();
+
+        Segment.init(20, new MyPoint(150, 150), new MyPoint(150, 250));
+        Item segment = Segment.getInstance();
+
+        StarPolygon.init(new MyPoint(150, 150));
+        StarPolygon.init(new MyPoint(250, 350));
+        Item starPolygon = StarPolygon.getInstance();
+
+        TextItem.init("dupa", new MyPoint(150, 150));
+        TextItem.init("dupa123", new MyPoint(150, 150));
+        Item text = TextItem.getInstance();
+
+        Rect.init(150, 100, new MyPoint(100, 150));
+        Rect.init(50, 10, new MyPoint(150, 150));
+        Item rect = Rect.getInstance();
+
+        Circle.init(30, new MyPoint(100, 150));
+        Circle.init(50, new MyPoint(150, 150));
+        Item circle = Circle.getInstance();
+
         Triangle.init(new MyPoint(50, 50), new MyPoint(100, 100), new MyPoint(150, 50));
         Triangle.init(new MyPoint(150, 50), new MyPoint(10, 10), new MyPoint(15, 50));
         Item triangle = Triangle.getInstance();
-        Item triangle2 = Triangle.getInstance();
+
         scene.addItem(triangle);
-//        scene.addItem(triangle2);
         scene.addItem(rect);
         scene.addItem(circle);
-//        scene.draw(true);
+        scene.addItem(text);
+        scene.addItem(segment);
+        scene.addItem(starPolygon);
+        scene.addItem(complex);
 
         SceneDecorator sceneDecorator = new SceneDecorator(scene, scene);
         sceneDecorator.draw(false);

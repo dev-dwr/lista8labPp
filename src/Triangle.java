@@ -7,17 +7,11 @@ import java.util.List;
 
 public class Triangle extends Shape implements Singleton {
     private static Item INSTANCE = null;
-    private static boolean instanceExists = false;
     private static MyPoint p1;
     private static MyPoint p2;
     private static MyPoint p3;
     private int thickness = 1;
 
-    Triangle() {
-//        p1 = new MyPoint(50, 50);
-//        p2 = new MyPoint(100, 100);
-//        p3 = new MyPoint(150, 50);
-    }
 
     public Triangle(MyPoint p1, MyPoint p2, MyPoint p3) {
         assert !p1.equals(p2);
@@ -34,7 +28,7 @@ public class Triangle extends Shape implements Singleton {
         }
         return Singleton.getInstance(INSTANCE);
     }
-    //przekazanie podczas parametr do metoedy
+
     public static Item init(MyPoint p1, MyPoint p2, MyPoint p3) {
         INSTANCE = new Triangle(p1,p2,p3);
         return INSTANCE;

@@ -6,15 +6,30 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
-public class Circle extends Shape {
+public class Circle extends Shape implements Singleton {
     private int radius;
     private MyPoint center;
     private boolean activeBoudingBox;
     private int thickness = 2;
+    private static Item INSTANCE = null;
+
+
     public Circle(int radius, MyPoint center) {
         this.radius = radius;
         this.center = center;
         super.isFilled = thickness == -1 ? true : false;
+    }
+
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(int radius, MyPoint center) {
+        INSTANCE = new Circle(radius, center);
+        return INSTANCE;
     }
 
     public boolean isActiveBoudingBox() {

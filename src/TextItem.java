@@ -7,7 +7,8 @@ import org.opencv.imgproc.Imgproc;
 import java.util.Arrays;
 import java.util.List;
 
-public class TextItem extends Item {
+public class TextItem extends Item implements Singleton {
+    private static Item INSTANCE = null;
     private String text;
     private Point org;
     private int fontFace = Imgproc.FONT_HERSHEY_SIMPLEX;
@@ -23,18 +24,31 @@ public class TextItem extends Item {
         this.text = text;
     }
 
-    @Override
-    MyPoint getPosition() {
-        return new MyPoint((int)org.x, (int)org.y);
+
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(String text, MyPoint org) {
+        INSTANCE = new TextItem(text, org);
+        return INSTANCE;
     }
 
     @Override
-    public void draw(Mat image, Scalar color,boolean box) {
+    MyPoint getPosition() {
+        return new MyPoint((int) org.x, (int) org.y);
+    }
+
+    @Override
+    public void draw(Mat image, Scalar color, boolean box) {
         List<MyPoint> points = getBoundingBox();
         MyPoint topLeft = points.get(1);
         MyPoint bottomRight = points.get(0);
         Imgproc.putText(image, text, org, fontFace, fontScale, color, thickness);
-        if(box){
+        if (box) {
             Imgproc.rectangle(image, new Point(topLeft.getX(), topLeft.getY()),
                     new Point(bottomRight.getX(), bottomRight.getY()), color);
         }

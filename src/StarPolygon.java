@@ -5,18 +5,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class StarPolygon extends Shape {
+public class StarPolygon extends Shape implements Singleton {
 
     private MyPoint center;
     private int thickness = 2;
     private int lineType = Imgproc.LINE_8;
     private int shift = 0;
     private Point[] vertices = new Point[10];
+    private static Item INSTANCE = null;
+
 
     public StarPolygon(MyPoint center) {
         this.center = center;
     }
 
+    public static Item getInstance() {
+        if (INSTANCE == null) {
+            throw new AssertionError("Initialize first");
+        }
+        return Singleton.getInstance(INSTANCE);
+    }
+
+    public static Item init(MyPoint center) {
+        INSTANCE = new StarPolygon(center);
+        return INSTANCE;
+    }
 
     @Override
     MyPoint getPosition() {
