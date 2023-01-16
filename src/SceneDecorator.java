@@ -2,14 +2,13 @@ import org.opencv.core.Scalar;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+//scene decorator here
 public class SceneDecorator implements SceneInterface{
     private SceneInterface decoratedScene;
     private Scene scene;
 
     public SceneDecorator(SceneInterface decoratedScene, Scene scene) {
         this.decoratedScene = decoratedScene;
-
         this.scene = scene;
     }
 
