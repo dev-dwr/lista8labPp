@@ -13,6 +13,8 @@ public class SceneDecorator implements SceneInterface{
         this.scene = scene;
     }
 
+
+
     @Override
     public void draw(boolean enableBox) {
         List<Item> allItemsList = scene.getItemList();
