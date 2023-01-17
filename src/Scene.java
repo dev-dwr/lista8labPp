@@ -8,7 +8,7 @@ import java.util.List;
 
 
 
-public class Scene implements SceneInterface{
+public class Scene implements SceneInterface, SingleElements{
     private java.util.List<Item> itemList = new LinkedList<>();
     private Mat image;
     private Scalar color;
@@ -37,6 +37,7 @@ public class Scene implements SceneInterface{
 
     void addItem(Item item) {
         itemList.add(item);
+//        removeDuplicatedInGivenElement(itemList);
     }
 
     public List<Item> getItemList() {
